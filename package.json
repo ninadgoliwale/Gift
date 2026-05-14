@@ -1,0 +1,13 @@
+{
+  "name": "giftcard-marketplace",
+  "version": "1.0.0",
+  "description": "Gift Card Marketplace - 60% Off",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "axios": "^1.6.0"
+  }
+}
