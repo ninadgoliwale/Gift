@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>GiftCart • 60% Off Premium Gift Cards</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Roboto, 'Helvetica Neue', system-ui, sans-serif;
+    }
+    body {
+      background: #f3f5f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 1.5rem;
+    }
+    .platform {
+      max-width: 480px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 2rem;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15);
+      overflow: hidden;
+      position: relative;
+      transition: all 0.2s ease;
+      border: 1px solid rgba(0,0,0,0.04);
+    }
+    .page {
+      display: none;
+      padding: 1.8rem 1.5rem 2rem;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .page.active {
+      display: flex;
+    }
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .logo-icon {
+      background: #ff9900;
+      color: #111;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      box-shadow: 0 8px 14px rgba(255,153,0,0.25);
+    }
+    .logo-text {
+      font-weight: 700;
+      font-size: 1.6rem;
+      letter-spacing: -0.5px;
+      color: #0f1111;
+    }
+    .logo-text span {
+      color: #ff9900;
+      font-weight: 800;
+    }
+    .subtitle {
+      color: #565959;
+      font-size: 0.85rem;
+      margin-top: -0.2rem;
+    }
+    .card {
+      background: #ffffff;
+      border: 1px solid #e9ecef;
+      border-radius: 1.2rem;
+      padding: 1.2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+    }
+    .input-group {
+      margin-bottom: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    label {
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: #0f1111;
+      letter-spacing: 0.2px;
+    }
+    input, select {
+      padding: 0.85rem 1rem;
+      border: 1.5px solid #d5d9d9;
+      border-radius: 0.8rem;
+      font-size: 0.95rem;
+      background: #f7fafa;
+      transition: all 0.15s;
+      outline: none;
+      width: 100%;
+    }
+    input:focus, select:focus {
+      border-color: #ff9900;
+      box-shadow: 0 0 0 4px rgba(255,153,0,0.15);
+      background: #ffffff;
+    }
+    .btn {
+      background: #ff9900;
+      border: none;
+      color: #111;
+      font-weight: 700;
+      padding: 0.9rem 1.2rem;
+      border-radius: 2rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      box-shadow: 0 6px 14px rgba(255,153,0,0.35);
+      border: 1px solid #e68a00;
+      letter-spacing: 0.3px;
+    }
+    .btn-outline {
+      background: #ffffff;
+      color: #0f1111;
+      box-shadow: none;
+      border: 1.5px solid #d5d9d9;
+      font-weight: 600;
+    }
+    .btn-small {
+      padding: 0.6rem 1.2rem;
+      font-size: 0.85rem;
+    }
+    .flex-row {
+      display: flex;
+      gap: 0.8rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .gift-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      margin: 0.5rem 0 0.2rem;
+    }
+    .gift-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f8fafc;
+      padding: 0.8rem 1rem;
+      border-radius: 1rem;
+      border: 1px solid #e9ecef;
+    }
+    .price-strike {
+      text-decoration: line-through;
+      color: #6b7280;
+      font-size: 0.85rem;
+    }
+    .discounted {
+      font-weight: 800;
+      color: #0f1111;
+      font-size: 1.2rem;
+    }
+    .badge {
+      background: #cc0c39;
+      color: white;
+      font-size: 0.7rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 1rem;
+      font-weight: 700;
+    }
+    .cart-summary {
+      background: #f0fdf4;
+      border-radius: 1rem;
+      padding: 0.8rem 1rem;
+      border: 1px solid #bbf7d0;
+    }
+    .qr-box {
+      background: white;
+      padding: 1rem;
+      border-radius: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: 1px dashed #94a3b8;
+    }
+    canvas {
+      margin: 0.5rem 0;
+      border-radius: 0.6rem;
+    }
+    .upi-id {
+      background: #eef2ff;
+      padding: 0.5rem 1rem;
+      border-radius: 2rem;
+      font-family: monospace;
+      font-weight: 600;
+      color: #1e1b4b;
+    }
+    .hidden {
+      display: none;
+    }
+    .note {
+      font-size: 0.75rem;
+      color: #5f6368;
+    }
+    hr {
+      border: 0.5px solid #e5e7eb;
+      margin: 0.8rem 0;
+    }
+    .telegram-link {
+      color: #0088cc;
+      font-weight: 600;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+<div class="platform" id="appRoot">
+  <!-- LOGIN PAGE -->
+  <div id="loginPage" class="page active">
+    <div class="logo-area">
+      <div class="logo-icon"><i class="fas fa-gift"></i></div>
+      <div class="logo-text">Gift<span>Cart</span></div>
+    </div>
+    <div class="subtitle">🔥 Up to 60% off • instant digital delivery</div>
+    <div class="card">
+      <h3 style="margin-bottom:0.8rem;"><i class="fas fa-lock" style="color:#ff9900;"></i> Sign in</h3>
+      <div class="input-group">
+        <label>Email or username</label>
+        <input type="text" id="loginEmail" placeholder="user@example.com" value="demo@giftcart.com">
+      </div>
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" id="loginPassword" placeholder="••••••••" value="123456">
+      </div>
+      <button class="btn" id="loginBtn"><i class="fas fa-arrow-right-to-bracket"></i> Secure Login</button>
+      <p style="margin-top:1rem; font-size:0.9rem;">New user? <a href="#" id="showRegisterLink" style="color:#ff9900; font-weight:700;">Create account</a></p>
+    </div>
+    <div class="note" style="text-align:center;"><i class="fas fa-shield-alt"></i> Trusted by 50k+ buyers</div>
+  </div>
+
+  <!-- REGISTER PAGE -->
+  <div id="registerPage" class="page">
+    <div class="logo-area">
+      <div class="logo-icon"><i class="fas fa-user-plus"></i></div>
+      <div class="logo-text">Gift<span>Cart</span></div>
+    </div>
+    <div class="card">
+      <h3>Create account</h3>
+      <div class="input-group">
+        <label>Full name</label>
+        <input type="text" id="regName" placeholder="Ninad Clerk">
+      </div>
+      <div class="input-group">
+        <label>Email</label>
+        <input type="email" id="regEmail" placeholder="ninad@example.com">
+      </div>
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" id="regPassword" placeholder="Min 6 characters">
+      </div>
+      <button class="btn" id="registerBtn"><i class="fas fa-check-circle"></i> Register & Continue</button>
+      <p style="margin-top:0.8rem;"><a href="#" id="showLoginLink" style="color:#ff9900;">← Back to login</a></p>
+    </div>
+  </div>
+
+  <!-- MAIN SHOP PAGE -->
+  <div id="shopPage" class="page">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="logo-area">
+        <div class="logo-icon"><i class="fas fa-gift"></i></div>
+        <div><span class="logo-text">Gift<span>Cart</span></span><div class="subtitle">60% off store</div></div>
+      </div>
+      <div>
+        <button class="btn-outline btn-small" id="cartToggleBtn"><i class="fas fa-shopping-cart"></i> <span id="cartCountBadge">0</span></button>
+        <button class="btn-outline btn-small" id="logoutBtn" style="margin-left:0.3rem;"><i class="fas fa-sign-out-alt"></i></button>
+      </div>
+    </div>
+    <div class="card">
+      <h4><i class="fas fa-tags" style="color:#ff9900;"></i> Select Gift Card (Min ₹50 cart)</h4>
+      <div class="gift-grid" id="giftContainer"></div>
+    </div>
+    <div id="cartPanel" class="card hidden">
+      <h4><i class="fas fa-shopping-basket"></i> Your Cart</h4>
+      <div id="cartItemsList" style="max-height:180px; overflow-y:auto; margin:0.5rem 0;"></div>
+      <div class="cart-summary">
+        <span>Total: <strong id="cartTotalDisplay">₹0</strong></span>
+        <span style="margin-left:auto; font-size:0.8rem;">(min ₹50)</span>
+      </div>
+      <button class="btn" id="proceedToCheckoutBtn" style="margin-top:0.5rem;"><i class="fas fa-lock"></i> Proceed to Pay</button>
+    </div>
+  </div>
+
+  <!-- CHECKOUT / PAYMENT PAGE -->
+  <div id="checkoutPage" class="page">
+    <div style="display:flex; align-items:center; gap:0.5rem;">
+      <i class="fas fa-arrow-left" id="backToShopBtn" style="font-size:1.4rem; color:#0f1111; cursor:pointer;"></i>
+      <h3>Secure Checkout</h3>
+    </div>
+    <div class="card">
+      <label><i class="fas fa-envelope"></i> Email for delivery</label>
+      <input type="email" id="deliveryEmail" placeholder="you@email.com" value="ninad@clerk.com">
+      <label style="margin-top:0.8rem;"><i class="fab fa-telegram"></i> Telegram ID (optional)</label>
+      <input type="text" id="telegramId" placeholder="@yourtelegram" value="@clerkmm">
+      <p class="note">Gift card sent after payment confirmation to email & telegram.</p>
+      <hr>
+      <div class="qr-box">
+        <span><strong>UPI ID:</strong> <span class="upi-id">ninadxclerk@fam</span></span>
+        <canvas id="qrCanvas" width="140" height="140" style="background:white; margin:0.7rem 0;"></canvas>
+        <span class="note">Scan & pay exact cart amount</span>
+      </div>
+      <div class="cart-summary" style="margin:1rem 0;">
+        <span>Amount to pay: <strong id="finalAmount">₹0</strong></span>
+      </div>
+      <button class="btn" id="confirmPaymentBtn"><i class="fas fa-paper-plane"></i> I have paid – Send Gift Card</button>
+      <p class="note" style="margin-top:0.6rem;">Info sent to @clerkmm on Telegram</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const giftCatalog = [
+      { id: 1, name: "Amazon Pay", original: 250, discounted: 100 },
+      { id: 2, name: "Flipkart", original: 500, discounted: 200 },
+      { id: 3, name: "Google Play", original: 300, discounted: 120 },
+      { id: 4, name: "Zomato", original: 200, discounted: 80 },
+      { id: 5, name: "Swiggy", original: 150, discounted: 60 }
+    ];
+
+    let cart = [];
+    let currentUser = null;
+    const UPI_ID = "ninadxclerk@fam";
+
+    const pages = {
+      login: document.getElementById('loginPage'),
+      register: document.getElementById('registerPage'),
+      shop: document.getElementById('shopPage'),
+      checkout: document.getElementById('checkoutPage')
+    };
+
+    function showPage(pageId) {
+      Object.keys(pages).forEach(key => pages[key].classList.remove('active'));
+      pages[pageId].classList.add('active');
+    }
+
+    function renderCart() {
+      const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+      document.getElementById('cartCountBadge').innerText = cartCount;
+      const cartItemsDiv = document.getElementById('cartItemsList');
+      const totalSpan = document.getElementById('cartTotalDisplay');
+      if (!cartItemsDiv) return;
+      
+      let total = 0;
+      cartItemsDiv.innerHTML = '';
+      if (cart.length === 0) {
+        cartItemsDiv.innerHTML = '<p class="note">Your cart is empty.</p>';
+      } else {
+        cart.forEach((item, idx) => {
+          total += item.price * item.quantity;
+          const div = document.createElement('div');
+          div.className = 'gift-item';
+          div.innerHTML = `
+            <span><strong>${item.name}</strong> (₹${item.price}) x${item.quantity}</span>
+            <button class="btn-outline btn-small" data-remove="${idx}" style="padding:0.2rem 0.6rem;"><i class="fas fa-trash"></i></button>
+          `;
+          cartItemsDiv.appendChild(div);
+        });
+      }
+      totalSpan.innerText = '₹' + total;
+      document.querySelectorAll('#cartItemsList button[data-remove]').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          const index = parseInt(this.getAttribute('data-remove'));
+          if (!isNaN(index) && cart[index]) {
+            cart.splice(index, 1);
+            renderCart();
+            renderGiftList();
+          }
+        });
+      });
+      document.getElementById('finalAmount') && (document.getElementById('finalAmount').innerText = '₹' + total);
+    }
+
+    function renderGiftList() {
+      const container = document.getElementById('giftContainer');
+      if (!container) return;
+      container.innerHTML = '';
+      giftCatalog.forEach(gc => {
+        const original = gc.original;
+        const discounted = gc.discounted;
+        const div = document.createElement('div');
+        div.className = 'gift-item';
+        div.innerHTML = `
+          <div>
+            <strong>${gc.name}</strong>
+            <div><span class="price-strike">₹${original}</span> <span class="discounted">₹${discounted}</span> <span class="badge">-60%</span></div>
+          </div>
+          <button class="btn-outline btn-small add-to-cart-btn" data-id="${gc.id}" data-name="${gc.name}" data-price="${discounted}"><i class="fas fa-cart-plus"></i> Add</button>
+        `;
+        container.appendChild(div);
+      });
+      document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          const id = parseInt(this.dataset.id);
+          const name = this.dataset.name;
+          const price = parseInt(this.dataset.price);
+          const existing = cart.find(item => item.id === id);
+          if (existing) {
+            existing.quantity += 1;
+          } else {
+            cart.push({ id, name, price, quantity: 1 });
+          }
+          renderCart();
+          document.getElementById('cartPanel')?.classList.remove('hidden');
+        });
+      });
+    }
+
+    function generateQR(amount = 0) {
+      const canvas = document.getElementById('qrCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const payAmount = amount > 0 ? amount : 0;
+      const upiString = `upi://pay?pa=${UPI_ID}&pn=GiftCart&am=${payAmount}&cu=INR`;
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0,0,140,140);
+      ctx.fillStyle = '#000000';
+      ctx.font = 'bold 10px monospace';
+      ctx.fillText('GiftCart UPI', 10, 20);
+      for (let i=0; i<8; i++) {
+        for (let j=0; j<8; j++) {
+          if ((i+j)%2===0 || i===0 || j===0) {
+            ctx.fillStyle = '#1f2937';
+            ctx.fillRect(20 + i*12, 35 + j*12, 8, 8);
+          }
+        }
+      }
+      ctx.fillStyle = '#0f172a';
+      ctx.font = '8px monospace';
+      ctx.fillText('ninadxclerk@fam', 15, 135);
+    }
+
+    function updateQRWithCartTotal() {
+      const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      generateQR(total);
+      const finalSpan = document.getElementById('finalAmount');
+      if (finalSpan) finalSpan.innerText = '₹' + total;
+    }
+
+    function cartMeetsMinimum() {
+      const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      return total >= 50;
+    }
+
+    document.getElementById('loginBtn').addEventListener('click', () => {
+      const email = document.getElementById('loginEmail').value.trim();
+      const pass = document.getElementById('loginPassword').value.trim();
+      if (!email || !pass) {
+        alert('Please enter email and password');
+        return;
+      }
+      currentUser = { name: email.split('@')[0] || 'User', email: email };
+      cart = [];
+      renderCart();
+      renderGiftList();
+      showPage('shop');
+    });
+
+    document.getElementById('registerBtn').addEventListener('click', () => {
+      const name = document.getElementById('regName').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const pass = document.getElementById('regPassword').value.trim();
+      if (!name || !email || pass.length < 4) {
+        alert('Please fill valid details (password min 4 chars)');
+        return;
+      }
+      currentUser = { name, email };
+      cart = [];
+      renderCart();
+      renderGiftList();
+      showPage('shop');
+      alert('Registration successful! Welcome ' + name);
+    });
+
+    document.getElementById('showRegisterLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      showPage('register');
+    });
+    document.getElementById('showLoginLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      showPage('login');
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      currentUser = null;
+      cart = [];
+      renderCart();
+      showPage('login');
+    });
+
+    document.getElementById('cartToggleBtn').addEventListener('click', () => {
+      const panel = document.getElementById('cartPanel');
+      panel.classList.toggle('hidden');
+    });
+
+    document.getElementById('proceedToCheckoutBtn').addEventListener('click', () => {
+      if (!cartMeetsMinimum()) {
+        alert('Minimum cart value ₹50 required. Please add more gift cards.');
+        return;
+      }
+      updateQRWithCartTotal();
+      showPage('checkout');
+    });
+
+    document.getElementById('backToShopBtn').addEventListener('click', () => {
+      showPage('shop');
+    });
+
+    document.getElementById('confirmPaymentBtn').addEventListener('click', async () => {
+      const deliveryEmail = document.getElementById('deliveryEmail').value.trim();
+      const telegramId = document.getElementById('telegramId').value.trim();
+      
+      if (!deliveryEmail) {
+        alert('Please provide email for gift card delivery.');
+        return;
+      }
+      
+      const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      
+      if (total < 50) {
+        alert('Cart minimum not met. Minimum ₹50 required.');
+        return;
+      }
+
+      const payBtn = document.getElementById('confirmPaymentBtn');
+      payBtn.disabled = true;
+      payBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending order...';
+
+      try {
+        const response = await fetch('/api/send-order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userEmail: deliveryEmail,
+            telegramId: telegramId || '@clerkmm',
+            amount: total,
+            cartItems: cart,
+            userName: currentUser?.name || 'Customer',
+          })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          alert('✅ Order sent successfully! Gift card will be delivered to your email & Telegram after payment verification.');
+          cart = [];
+          renderCart();
+          renderGiftList();
+          showPage('shop');
+        } else {
+          alert('❌ Failed to send order. Please contact @clerkmm on Telegram.');
+        }
+      } catch (error) {
+        alert('❌ Network error. Your order is saved. Contact @clerkmm on Telegram with your email.');
+      } finally {
+        payBtn.disabled = false;
+        payBtn.innerHTML = '<i class="fas fa-paper-plane"></i> I have paid – Send Gift Card';
+      }
+    });
+
+    renderGiftList();
+    renderCart();
+    generateQR(0);
+    document.getElementById('telegramId').value = '@clerkmm';
+    document.getElementById('cartPanel').classList.add('hidden');
+  })();
+</script>
+</body>
+  </html>
